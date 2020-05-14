@@ -3,11 +3,12 @@
  * @author: hufan
  * @Date: 2020-05-09 10:23:01
  * @LastEditors: hufan
- * @LastEditTime: 2020-05-14 20:26:04
+ * @LastEditTime: 2020-05-14 20:37:01
  */
 import Layout from "../components/MyLayout";
 import PostList from "../components/PostList/PostList";
 import Paginator from "../components/Pagination";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import { postsGetAsync, tagsGetAsync } from "../service/index";
 import css from "./index.less";
@@ -28,6 +29,10 @@ const Index = (props) => {
   }, [page]);
   return (
     <Layout>
+      <Head>
+        <title>Contentful Posts</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
       <PostList data={props.posts} />
       <div className={css.tag}></div>
       <div className={css.pagination}>
