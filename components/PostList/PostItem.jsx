@@ -3,7 +3,7 @@
  * @author: hufan
  * @Date: 2020-05-09 16:03:29
  * @LastEditors: hufan
- * @LastEditTime: 2020-05-14 18:36:05
+ * @LastEditTime: 2020-05-14 20:58:54
  */
 import Link from "next/link";
 import ReactMarkDown from "react-markdown";
@@ -23,6 +23,7 @@ export const PostItem = (props) => {
         marginBottom: 20,
         display: "flex",
         flexDirection: "column",
+        width: "90%",
       }}
     >
       <div className={css.header}>
