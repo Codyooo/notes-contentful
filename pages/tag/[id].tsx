@@ -1,9 +1,11 @@
+import { NextPageContext } from "next";
+
 /**
  * @file: description
  * @author: hufan
  * @Date: 2020-05-12 18:38:54
  * @LastEditors: hufan
- * @LastEditTime: 2020-05-14 17:44:08
+ * @LastEditTime: 2020-05-15 15:58:19
  */
 const TagPage = (props) => {
   const { id } = props;
@@ -17,7 +19,7 @@ const TagPage = (props) => {
 
 export default TagPage;
 
-TagPage.getInitialProps = async (ctx) => {
+TagPage.getInitialProps = async (ctx: NextPageContext) => {
   //@TODO: get Tags
 
   const { id } = ctx.query;

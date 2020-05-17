@@ -3,7 +3,7 @@
  * @author: hufan
  * @Date: 2020-05-14 18:40:26
  * @LastEditors: hufan
- * @LastEditTime: 2020-05-14 19:38:41
+ * @LastEditTime: 2020-05-15 15:11:46
  */
 import React, { Fragment, useState, useEffect } from "react";
 import css from "./style.less";
@@ -13,10 +13,16 @@ import css from "./style.less";
 //     range: number[];
 //     handlePaginationChange: Function;
 // }
+
+export type PaginatorProps = {
+  skip: number;
+  range: number[];
+  handlePaginationChange: (page: number) => void;
+};
 const PaginatorComponent = ({
   skip = 1,
   range = [1, 2, 3, 4, 5],
-  handlePaginationChange = () => "",
+  handlePaginationChange = (page: number) => {},
 }) => {
   skip = !!skip ? skip : 0;
 

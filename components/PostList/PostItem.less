@@ -1,12 +1,13 @@
-.red {
-  color: red;
-}
-
 .post-item__wrapper {
   display: flex;
   width: 656px;
   //   height: 143px;
-  margin-bottom: 48px;
+
+  @media (max-width: 800px) {
+    // background-color: red !important;
+    font-size: 12px;
+    margin-bottom: 0.6rem !important;
+  }
 
   .header {
     display: flex;
@@ -16,7 +17,8 @@
       &:hover {
         color: #175199;
       }
-      font-size: 20px;
+      font-size: 16px;
+      line-height: 1;
       font-weight: 600;
       cursor: pointer;
       font-family: medium-content-sans-serif-font, -apple-system,
@@ -24,7 +26,7 @@
         "Open Sans", "Helvetica Neue", sans-serif;
       color: rgba(0, 0, 0, 0.84);
       margin: 0;
-      margin-bottom: 10px;
+      margin-bottom: 14px;
     }
 
     .date {
@@ -39,17 +41,17 @@
     .cover {
       width: 190px;
       object-fit: cover;
-      height: 105px;
+      height: 90px;
       border-radius: 8px;
       overflow: hidden;
-      flex: 1;
+      flex: 3;
     }
 
     .preview {
-      ::after {
-        content: "...";
-        position: absolute;
-      }
+      // ::after {
+      //   content: "...";
+      //   position: absolute;
+      // }
       margin-left: 10px;
       max-height: 120px;
       overflow: hidden;
@@ -58,7 +60,7 @@
       white-space: normal;
       word-break: break-word;
 
-      flex: 2;
+      flex: 4;
       * {
         margin-top: 0;
         margin-bottom: 2px;

@@ -3,7 +3,7 @@
  * @author: hufan
  * @Date: 2020-05-11 14:33:41
  * @LastEditors: hufan
- * @LastEditTime: 2020-05-12 18:34:21
+ * @LastEditTime: 2020-05-17 11:05:47
  */
 import { useForm, Controller } from "react-hook-form";
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -12,11 +12,12 @@ import Input from "@material-ui/core/Input";
 import moment from "moment";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
+import { useState } from "react";
 
 const Comments = (props) => {
   const { postId, onCreate, comments, loading } = props;
   const { control, handleSubmit, reset } = useForm();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const onSubmit = async (data) => {
     reset();
     await onCreate(data);
@@ -66,7 +67,7 @@ const Comments = (props) => {
         <MuiAlert
           elevation={6}
           variant="filled"
-          onClose={handleClose}
+          onClose={() => setOpen(false)}
           severity="success"
         >
           评论成功!

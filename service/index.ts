@@ -3,20 +3,27 @@
  * @author: hufan
  * @Date: 2020-05-11 14:47:25
  * @LastEditors: hufan
- * @LastEditTime: 2020-05-14 20:25:07
+ * @LastEditTime: 2020-05-15 15:55:57
  */
 
 import { manageClient, noteClient } from "./noteClitent";
-import { NextPage } from "next";
+import { get } from "lodash";
 import moment from "moment";
+import {
+  ICommentFields,
+  IDocFields,
+  ITagFields,
+} from "../@types/generated/contentful";
 
 /**
  * 新增评论
  */
-export const commentAddAsync = async (comment, postId) => {
+export const commentAddAsync = async (comment: string, postId: string) => {
   try {
     const space = await manageClient.getSpace("ih3u2aja8x2o");
     localStorage.setItem;
+    const env = await space.getEnvironments();
+    console.log("env", env);
 
     const entry = await space.createEntry("comment", {
       fields: {
@@ -49,16 +56,16 @@ export const commentAddAsync = async (comment, postId) => {
 /**
  * 获取评论
  */
-export const commentsGetAsync = async (postId) => {
+export const commentsGetAsync = async (postId: string) => {
   try {
-    const res = await noteClient.getEntries({
+    const res = await noteClient.getEntries<ICommentFields>({
       content_type: "comment",
       "fields.postId.en-US.sys.id": postId,
     });
 
-    const comm = res.items.map((c) => ({
-      comment: c.fields.comment,
-      date: c.fields.commentDate,
+    const comm = res.items.map(({ fields }) => ({
+      comment: fields.comment,
+      date: fields.commentDate,
       // postId: c.fields.postId.sys.id,
     }));
     return comm;
@@ -71,13 +78,15 @@ export const commentsGetAsync = async (postId) => {
  * 根据id获取post
  *
  */
-export const postGetByIdAsync = async (id) => {
+export const postGetByIdAsync = async (id: string) => {
   try {
-    const res = await noteClient.getEntry(id);
+    const { fields, sys } = await noteClient.getEntry<IDocFields>(id);
     return {
-      title: res.fields.title,
-      content: res.fields.content,
-      tags: res.fields.tags.map(({ fields, sys }) => ({
+      title: fields.title,
+
+      content: fields.content,
+      cover: fields.cover.fields.file?.url,
+      tags: fields.tags.map(({ fields, sys }) => ({
         tag: fields.tag,
         id: sys.id,
       })),
@@ -92,10 +101,8 @@ export const postGetByIdAsync = async (id) => {
  */
 export const tagsGetAsync = async () => {
   try {
-    const res = await noteClient.getEntries({
+    const res = await noteClient.getEntries<ITagFields>({
       content_type: "tag",
-      // select: `fields.tag,fields.preview,sys.id,sys.updatedAt,fields.cover`,
-      // "fields.title": "测试",
     });
 
     const data = res.items.map(({ fields, sys }) => ({
@@ -106,7 +113,7 @@ export const tagsGetAsync = async () => {
       tags: data,
     };
   } catch (error) {
-    return [];
+    return {};
   }
 };
 
@@ -115,7 +122,7 @@ export const tagsGetAsync = async () => {
  */
 export const postsGetAsync = async (page = 1, limit = 3) => {
   try {
-    const res = await noteClient.getEntries({
+    const res = await noteClient.getEntries<IDocFields>({
       content_type: "doc",
       select: `fields.title,fields.preview,sys.id,sys.updatedAt,fields.cover`,
       limit,
