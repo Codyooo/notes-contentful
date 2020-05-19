@@ -7,7 +7,8 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
-    "gen": "contentful-typescript-codegen --output @types/generated/contentful.d.ts"
+    "gen": "contentful-typescript-codegen --output @types/generated/contentful.d.ts",
+    "deploy": "curl -X POST https://api.zeit.co/v1/integrations/deploy/QmdfRnR6ykoMcPxHkNZWPck8mTakUqkHDAS2Yju4TiGDfM/M5ku5gWy3i"
   },
   "keywords": [],
   "author": "",
