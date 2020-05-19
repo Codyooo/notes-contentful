@@ -3,16 +3,16 @@
  * @author: hufan
  * @Date: 2020-05-11 14:47:25
  * @LastEditors: hufan
- * @LastEditTime: 2020-05-15 15:55:57
+ * @LastEditTime: 2020-05-19 19:45:36
  */
 
-import { manageClient, noteClient } from "./noteClitent";
-import { get } from "lodash";
+import { manageClient, deliveryClient } from "./client";
 import moment from "moment";
 import {
   ICommentFields,
   IDocFields,
   ITagFields,
+  IMovieFields,
 } from "../@types/generated/contentful";
 
 /**
@@ -58,7 +58,7 @@ export const commentAddAsync = async (comment: string, postId: string) => {
  */
 export const commentsGetAsync = async (postId: string) => {
   try {
-    const res = await noteClient.getEntries<ICommentFields>({
+    const res = await deliveryClient.getEntries<ICommentFields>({
       content_type: "comment",
       "fields.postId.en-US.sys.id": postId,
     });
@@ -80,7 +80,7 @@ export const commentsGetAsync = async (postId: string) => {
  */
 export const postGetByIdAsync = async (id: string) => {
   try {
-    const { fields, sys } = await noteClient.getEntry<IDocFields>(id);
+    const { fields, sys } = await deliveryClient.getEntry<IDocFields>(id);
     return {
       title: fields.title,
 
@@ -101,7 +101,7 @@ export const postGetByIdAsync = async (id: string) => {
  */
 export const tagsGetAsync = async () => {
   try {
-    const res = await noteClient.getEntries<ITagFields>({
+    const res = await deliveryClient.getEntries<ITagFields>({
       content_type: "tag",
     });
 
@@ -122,7 +122,7 @@ export const tagsGetAsync = async () => {
  */
 export const postsGetAsync = async (page = 1, limit = 3) => {
   try {
-    const res = await noteClient.getEntries<IDocFields>({
+    const res = await deliveryClient.getEntries<IDocFields>({
       content_type: "doc",
       select: `fields.title,fields.preview,sys.id,sys.updatedAt,fields.cover`,
       limit,
@@ -146,5 +146,75 @@ export const postsGetAsync = async (page = 1, limit = 3) => {
     };
   } catch (error) {
     return {};
+  }
+};
+
+/**
+ * 新增评论
+ */
+export const movieAddAsync = async (title: string, postId: string) => {
+  try {
+    const space = await manageClient.getSpace("ih3u2aja8x2o");
+    space.createAsset({
+      fields: {
+        title: {
+          "en-US": title,
+        },
+        file: {
+          "en-US": {
+            contentType: "image/jpeg",
+            fileName: `${title}_${moment().toString()}.jpeg`,
+          },
+        },
+        description: {},
+      },
+    });
+    const entry = await space.createEntry("movie", {
+      fields: {
+        title: {
+          "en-US": title,
+        },
+
+        commentDate: {
+          "en-US": moment().toDate(),
+        },
+
+        postId: {
+          "en-US": {
+            sys: {
+              type: "Link",
+              linkType: "Entry",
+              id: postId,
+            },
+          },
+        },
+      },
+    });
+
+    await entry.publish();
+  } catch (error) {
+    console.log("error", error);
+  }
+};
+
+/** 获取全部电影 */
+export const getMoivesAsync = async (query = "") => {
+  try {
+    const res = await deliveryClient.getEntries<IMovieFields>({
+      content_type: "movie",
+      "fields.title[match]": query,
+    });
+
+    return res.items.map(({ fields, sys }) => ({
+      title: fields.title,
+      cover: fields.cover.fields.file.url,
+      actors: fields.actors,
+      rating: fields.rating,
+      desc: fields.desc,
+      id: sys.id,
+    }));
+  } catch (error) {
+    console.log("error", error);
+    return [];
   }
 };

@@ -1,13 +1,15 @@
-import { NextPageContext } from "next";
-
 /**
  * @file: description
  * @author: hufan
  * @Date: 2020-05-12 18:38:54
  * @LastEditors: hufan
- * @LastEditTime: 2020-05-15 15:58:19
+ * @LastEditTime: 2020-05-18 18:08:27
  */
-const TagPage = (props) => {
+import { NextPageContext } from "next";
+export type ITagProps = {
+  id: string;
+};
+const TagPage = (props: ITagProps) => {
   const { id } = props;
   return (
     <div>

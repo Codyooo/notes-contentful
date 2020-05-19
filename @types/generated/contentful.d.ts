@@ -47,7 +47,7 @@ export interface IDocFields {
   cover?: Asset | undefined;
 
   /** Tags */
-  tags?: Entry<{ [fieldId: string]: unknown }>[] | undefined;
+  tags?: ITag[] | undefined;
 }
 
 /** 文章内容 */
@@ -62,6 +62,40 @@ export interface IDoc extends Entry<IDocFields> {
     contentType: {
       sys: {
         id: "doc";
+        linkType: "ContentType";
+        type: "Link";
+      };
+    };
+  };
+}
+
+export interface IMovieFields {
+  /** title */
+  title: string;
+
+  /** actors */
+  actors?: string[] | undefined;
+
+  /** cover */
+  cover?: Asset | undefined;
+
+  /** rating */
+  rating?: number | undefined;
+
+  /** desc */
+  desc?: string | undefined;
+}
+
+export interface IMovie extends Entry<IMovieFields> {
+  sys: {
+    id: string;
+    type: string;
+    createdAt: string;
+    updatedAt: string;
+    locale: string;
+    contentType: {
+      sys: {
+        id: "movie";
         linkType: "ContentType";
         type: "Link";
       };
@@ -102,7 +136,7 @@ export interface ITagFields {
   tag?: string | undefined;
 
   /** docs */
-  docs?: Entry<{ [fieldId: string]: unknown }>[] | undefined;
+  docs?: IDoc[] | undefined;
 }
 
 /** 文章标签 */
@@ -124,7 +158,7 @@ export interface ITag extends Entry<ITagFields> {
   };
 }
 
-export type CONTENT_TYPE = "comment" | "doc" | "seo" | "tag";
+export type CONTENT_TYPE = "comment" | "doc" | "movie" | "seo" | "tag";
 
 export type LOCALE_CODE = "en-US";
 

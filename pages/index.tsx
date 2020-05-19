@@ -3,7 +3,7 @@
  * @author: hufan
  * @Date: 2020-05-09 10:23:01
  * @LastEditors: hufan
- * @LastEditTime: 2020-05-15 17:24:46
+ * @LastEditTime: 2020-05-19 10:20:59
  */
 import Layout from "../components/MyLayout";
 import PostList from "../components/PostList/PostList";
@@ -13,7 +13,8 @@ import { useRouter } from "next/router";
 import { postsGetAsync, tagsGetAsync } from "../service/index";
 import css from "./index.less";
 import { useEffect, useState } from "react";
-import { getContentModels } from "../service/model";
+import Link from "next/link";
+import Button from "@material-ui/core/Button";
 import {
   GetStaticProps,
   GetStaticPaths,
@@ -31,8 +32,7 @@ export type IndexProps = {
 };
 
 const Index = (props: IndexProps) => {
-  useEffect(() => {}, []);
-  console.log("p", props);
+  // useEffect(() => {}, []);
   const { currentPage = 1, total, limit } = props;
 
   const range = calculateRange(Math.ceil(total / limit));
@@ -57,6 +57,10 @@ const Index = (props: IndexProps) => {
           handlePaginationChange={(page) => setPage(page)}
         />
       </div>
+
+      <Link href="/movie">
+        <Button color="secondary">movie</Button>
+      </Link>
     </Layout>
   );
 };
