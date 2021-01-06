@@ -22,7 +22,7 @@
     "@types/react-scroll": "^1.5.5",
     "@zeit/next-css": "^1.0.1",
     "@zeit/next-less": "^1.0.1",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "contentful": "^7.14.4",
     "contentful-management": "^5.26.1",
     "less": "^3.11.1",
